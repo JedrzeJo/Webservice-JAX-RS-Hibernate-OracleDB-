@@ -62,4 +62,10 @@ public class MessagesResource {
 	}
 	
 	
+	@Path("/{messageId}/comments")
+	public CommentResource getCommentResource() {
+		return new CommentResource();
+	}
+	
+	
 }
