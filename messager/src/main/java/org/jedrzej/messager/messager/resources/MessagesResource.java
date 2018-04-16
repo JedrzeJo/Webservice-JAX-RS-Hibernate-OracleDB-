@@ -2,6 +2,7 @@ package org.jedrzej.messager.messager.resources;
 
 import java.util.List;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -14,6 +15,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.jedrzej.messager.messager.model.Message;
+import org.jedrzej.messager.messager.resources.beans.MessageFilterBean;
 import org.jedrzej.messager.messager.service.MessageService;
 
 @Path("/messages")
@@ -24,14 +26,13 @@ public class MessagesResource {
 	MessageService messageservice= new MessageService();
 	
 	@GET //first api
-	public List <Message> getMessages(@QueryParam("year") int year,
-									@QueryParam("start") int start,
-									@QueryParam("size") int size) {
-		if (year > 0 ) {
-			return messageservice.getAllMessagesByYear(year);
+	public List <Message> getMessages(@BeanParam MessageFilterBean mfBean) {
+		if (mfBean.getYear() > 0 ) {
+			return messageservice.getAllMessagesByYear(mfBean.getYear());
 		}
-		if(start >= 0 && size >= 0 ) {
-			return messageservice.getAllMessagesPaginated(start, size);
+		if(mfBean.getStart() >= 0 && mfBean.getSize() >= 0 ) {
+			return messageservice.getAllMessagesPaginated(mfBean.getStart(),
+					mfBean.getSize());
 		}
 		return messageservice.getAllMessages();	
 	}
