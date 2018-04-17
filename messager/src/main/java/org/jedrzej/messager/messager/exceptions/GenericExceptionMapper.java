@@ -8,7 +8,7 @@ import javax.ws.rs.ext.Provider;
 import org.jedrzej.messager.messager.model.ErrorMessage;
 
 //class witch will catch all exceptions
-@Provider
+//@Provider - excluded cause i decieded to add WebApplicationExceptions in Service classes
 public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
 	
 	@Override
