@@ -42,10 +42,25 @@ public class MessagesResource {
 	}
 	
 	@GET //second api
-	@Path("/{messageId}")
-	public Message getMessage(@PathParam("messageId") long id) {
-		return messageservice.getMessage(id);
+	@Path("/{messageId}") //links delivered in this single method (others to be done)
+	public Message getMessage(@PathParam("messageId") long id, @Context UriInfo uriInfo) {
+		Message message = messageservice.getMessage(id);
+		message.addLink(getUriForSelf(uriInfo, message), "self");
+		return message;
 	}
+
+	
+	
+	private String getUriForSelf(UriInfo uriInfo, Message message) {
+		String uri = uriInfo.getBaseUriBuilder()
+				.path(MessagesResource.class)
+				.path(Long.toString(message.getId()))
+				.build()
+				.toString();
+		return uri;
+	}
+	
+	
 	
 	@POST
 	public Response addMessage(Message message, @Context UriInfo uriInfo) {

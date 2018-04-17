@@ -17,7 +17,7 @@ public class CommentService {
 	public List <Comment> getAllComments (long messageId){
 		Message message = messages.get(messageId);
 		if(message == null) {
-			throw new NotFoundException();
+			throw new NotFoundException();	//WebApplicationException scion(potomek)
 		}
 		Map<Long, Comment> comments = messages.get(messageId).getComments();
 		return new ArrayList<Comment>(comments.values());
