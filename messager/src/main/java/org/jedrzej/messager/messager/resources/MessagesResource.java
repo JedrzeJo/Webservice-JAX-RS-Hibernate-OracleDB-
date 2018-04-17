@@ -23,7 +23,7 @@ import org.jedrzej.messager.messager.service.MessageService;
 @Produces(MediaType.APPLICATION_JSON)
 public class MessagesResource {
 
-	MessageService messageservice= new MessageService();
+	private MessageService messageservice= new MessageService();
 	
 	@GET //first api
 	public List <Message> getMessages(@BeanParam MessageFilterBean mfBean) {

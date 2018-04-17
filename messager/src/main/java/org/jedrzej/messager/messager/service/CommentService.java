@@ -17,4 +17,30 @@ public class CommentService {
 		return new ArrayList<Comment>(comments.values());
 	}
 	
+	public Comment getComment(long messageId, long commentId) {
+		Map <Long, Comment> comments = messages.get(messageId).getComments();
+		return comments.get(commentId);
+	}
+	
+	public Comment addComment(Long messageId, Comment comment) {
+		Map <Long, Comment> comments = messages.get(messageId).getComments();
+		comment.setId(comments.size()+1);
+		comments.put(comment.getId(), comment);
+		return comment;
+	}
+	
+	public Comment updateComment(Long messageId, Comment comment) {
+		Map <Long, Comment> comments = messages.get(messageId).getComments();
+		if(comment.getId()<=0) {
+			return null;
+		}
+		comments.put(comment.getId(), comment);
+		return comment;
+	}
+	
+	public Comment removeComment(long messageId, long commentId) {
+		Map<Long, Comment> comments = messages.get(messageId).getComments();
+		return comments.remove(commentId);
+	}
+	
 }
