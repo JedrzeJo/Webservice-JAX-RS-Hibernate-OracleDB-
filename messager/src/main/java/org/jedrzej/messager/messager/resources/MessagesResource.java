@@ -1,5 +1,6 @@
 package org.jedrzej.messager.messager.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.BeanParam;
@@ -12,7 +13,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import org.jedrzej.messager.messager.model.Message;
 import org.jedrzej.messager.messager.resources.beans.MessageFilterBean;
@@ -44,8 +48,19 @@ public class MessagesResource {
 	}
 	
 	@POST
-	public Message addMessage(Message message) {
-		return messageservice.addMessage(message);
+	public Response addMessage(Message message, @Context UriInfo uriInfo) {
+		Message newMessage = messageservice.addMessage(message);
+		String newId = String.valueOf(newMessage.getId());
+		URI uri = uriInfo.getAbsolutePathBuilder().path(newId).build();
+		return Response.created(uri)
+						//created dodaje statusHTTP oraz header z nowym url.
+						.entity(newMessage) //dodaje instancje do opowiedzi
+						.build();
+		/* przykladowe inne f. Response'a : .accepted() .notModified()
+		 	.ok() - zwraca status 200	*/
+		
+		/*return messageservice.addMessage(message); 
+		odpowiedz bez statusu, oraz bez linku w headerze do nowopowstalej instancji*/
 	}
 	
 	@PUT
