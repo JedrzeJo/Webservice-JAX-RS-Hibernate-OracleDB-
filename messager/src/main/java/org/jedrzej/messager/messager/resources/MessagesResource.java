@@ -22,9 +22,23 @@ import org.jedrzej.messager.messager.model.Message;
 import org.jedrzej.messager.messager.resources.beans.MessageFilterBean;
 import org.jedrzej.messager.messager.service.MessageService;
 
+/*
+ Content Type negotiation note:
+ 
+ Client: Accepts / Content-Type
+ Server: @Produces / @Consumes
+ 
+ We can add all types of consumes/produces in single method/class,
+ But we gain more power when we separate similar methods for each Content Type, and put
+ different logic inside. (otherwise it would be duplicating).
+ example below:
+ 
+  */
+
+
 @Path("/messages")
 @Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
+@Produces(value = {MediaType.APPLICATION_JSON, MediaType.TEXT_XML}) //or we can put different @Produces before each @GEt method for example(it only makes sense when we implement different logic inside).
 public class MessagesResource {
 
 	private MessageService messageservice= new MessageService();
