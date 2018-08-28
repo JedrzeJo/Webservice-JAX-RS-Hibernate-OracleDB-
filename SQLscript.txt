@@ -1,0 +1,56 @@
+CREATE TABLE
+  userTable
+  (
+     id INT NOT NULL PRIMARY KEY,
+     login VARCHAR(15) NOT NULL 
+            UNIQUE CHECK(length(login)>=5),
+     pass CHAR(40) NOT NULL CHECK(length(pass)=40)      
+  );
+
+INSERT INTO userTable VALUES(
+  1,
+  'admin',
+  DBMS_CRYPTO.HASH(UTL_RAW.CAST_TO_RAW('admin'),3)
+  );
+  commit;
+
+ CREATE TABLE Profiles 
+(
+  id INT NOT NULL PRIMARY KEY,
+  profileNAme VARCHAR(20) NOT NULL UNIQUE,
+  firstName VARCHAR(20),
+  lastName VARCHAR(20),
+  dateCreated DATE
+);
+
+ CREATE TABLE Messages
+(
+  id INT NOT NULL PRIMARY KEY,
+  message VARCHAR(1000),
+  author VARCHAR(20) NOT NULL,
+  creationDate DATE
+);
+
+ CREATE TABLE Comments
+(
+  id INT NOT NULL PRIMARY KEY,
+  commentMsg VARCHAR(1000),
+  author VARCHAR(20) NOT NULL,
+  creationDate DATE,
+  messageID INT NOT NULL
+);
+ALTER TABLE Comments
+ADD FOREIGN KEY (messageID)
+REFERENCES Messages(id)
+ON DELETE CASCADE;
+
+CREATE TABLE Links 
+(
+  linkString VARCHAR(100),
+  relString VARCHAR(100),
+  messageID INT NOT NULL
+);
+ALTER TABLE Links
+ADD FOREIGN KEY (messageID)
+REFERENCES Messages(id)
+ON DELETE CASCADE;
